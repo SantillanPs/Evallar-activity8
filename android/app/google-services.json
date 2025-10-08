@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "257852168671",
+    "project_id": "mobilec-badd3",
+    "storage_bucket": "mobilec-badd3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257852168671:android:b2cacc4e0143fb2bf3cc6a",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjOyK0_1sFsU6S0nXXtDmTRf-dGAje3JY"
+        } 
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
