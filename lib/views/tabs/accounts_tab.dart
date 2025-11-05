@@ -37,6 +37,10 @@ class _AccountsTabState extends State<AccountsTab> {
     final TextEditingController firstNameController = TextEditingController(text: userData['firstName'] ?? '');
     final TextEditingController lastNameController = TextEditingController(text: userData['lastName'] ?? '');
     final TextEditingController ageController = TextEditingController(text: userData['age'] ?? '');
+    final TextEditingController pinCodeController = TextEditingController(text: userData['pinCode'] ?? '');
+    final TextEditingController barangayController = TextEditingController(text: userData['barangay'] ?? '');
+    final TextEditingController cityController = TextEditingController(text: userData['city'] ?? '');
+    final TextEditingController purokController = TextEditingController(text: userData['purok'] ?? '');
     
     return showDialog(
       context: context,
@@ -80,6 +84,39 @@ class _AccountsTabState extends State<AccountsTab> {
                   ),
                   keyboardType: TextInputType.number,
                 ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: purokController,
+                  decoration: const InputDecoration(
+                    labelText: 'Purok',
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: barangayController,
+                  decoration: const InputDecoration(
+                    labelText: 'Barangay',
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: cityController,
+                  decoration: const InputDecoration(
+                    labelText: 'City',
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: pinCodeController,
+                  decoration: const InputDecoration(
+                    labelText: 'Pin Code',
+                    border: UnderlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
               ],
             ),
           ),
@@ -106,6 +143,10 @@ class _AccountsTabState extends State<AccountsTab> {
                     'firstName': firstNameController.text.trim(),
                     'lastName': lastNameController.text.trim(),
                     'age': ageController.text.trim(),
+                    'pinCode': pinCodeController.text.trim(),
+                    'barangay': barangayController.text.trim(),
+                    'city': cityController.text.trim(),
+                    'purok': purokController.text.trim(),
                   });
                   
                   if (context.mounted) {
@@ -185,6 +226,164 @@ class _AccountsTabState extends State<AccountsTab> {
     );
   }
 
+  Future<void> _addNewAccount() async {
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController firstNameController = TextEditingController();
+    final TextEditingController lastNameController = TextEditingController();
+    final TextEditingController ageController = TextEditingController();
+    final TextEditingController pinCodeController = TextEditingController();
+    final TextEditingController barangayController = TextEditingController();
+    final TextEditingController cityController = TextEditingController();
+    final TextEditingController purokController = TextEditingController();
+    
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add New Account'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email *',
+                    border: UnderlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Password *',
+                    border: UnderlineInputBorder(),
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: firstNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'First Name',
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: lastNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Last Name',
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: ageController,
+                  decoration: const InputDecoration(
+                    labelText: 'Age',
+                    border: UnderlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: purokController,
+                  decoration: const InputDecoration(
+                    labelText: 'Purok',
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: barangayController,
+                  decoration: const InputDecoration(
+                    labelText: 'Barangay',
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: cityController,
+                  decoration: const InputDecoration(
+                    labelText: 'City',
+                    border: UnderlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: pinCodeController,
+                  decoration: const InputDecoration(
+                    labelText: 'Pin Code',
+                    border: UnderlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (emailController.text.trim().isEmpty || passwordController.text.trim().isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Email and password are required')),
+                  );
+                  return;
+                }
+                
+                try {
+                  // Create user in Firebase Authentication
+                  final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                  );
+                  
+                  // Add user data to Firestore
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(userCredential.user!.uid)
+                      .set({
+                    'uid': userCredential.user!.uid,
+                    'email': emailController.text.trim(),
+                    'firstName': firstNameController.text.trim(),
+                    'lastName': lastNameController.text.trim(),
+                    'age': ageController.text.trim(),
+                    'pinCode': pinCodeController.text.trim(),
+                    'barangay': barangayController.text.trim(),
+                    'city': cityController.text.trim(),
+                    'purok': purokController.text.trim(),
+                    'createdAt': FieldValue.serverTimestamp(),
+                  });
+                  
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Account created successfully')),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error: $e')),
+                    );
+                  }
+                }
+              },
+              child: const Text('Create'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,6 +400,11 @@ class _AccountsTabState extends State<AccountsTab> {
             style: TextButton.styleFrom(foregroundColor: Colors.red),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addNewAccount,
+        backgroundColor: Colors.orange,
+        child: const Icon(Icons.add),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

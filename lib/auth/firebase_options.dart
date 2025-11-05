@@ -35,20 +35,20 @@ class DefaultFirebaseOptions {
 
   // Android Firebase config from google-services.json
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBjOyK0_1sFsU6S0nXXtDmTRf-dGAje3JY',
-    appId: '1:257852168671:android:b2cacc4e0143fb2bf3cc6a',
-    messagingSenderId: '257852168671',
-    projectId: 'mobilec-badd3',
-    storageBucket: 'mobilec-badd3.firebasestorage.app',
+    apiKey: 'AIzaSyBH0KNivLQA1VMGr8Nwt-slqExvQgLUJM4',
+    appId: '1:606102785559:android:62c35df74978d4dab55652',
+    messagingSenderId: '606102785559',
+    projectId: 'activity-4-47631',
+    storageBucket: 'activity-4-47631.firebasestorage.app',
   );
 
   // Web config - reuses Android credentials with authDomain added
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBjOyK0_1sFsU6S0nXXtDmTRf-dGAje3JY',
-    appId: '1:257852168671:android:b2cacc4e0143fb2bf3cc6a',
-    messagingSenderId: '257852168671',
-    projectId: 'mobilec-badd3',
-    authDomain: 'mobilec-badd3.firebaseapp.com',
-    storageBucket: 'mobilec-badd3.firebasestorage.app',
+    apiKey: 'AIzaSyBH0KNivLQA1VMGr8Nwt-slqExvQgLUJM4',
+    appId: '1:606102785559:android:62c35df74978d4dab55652',
+    messagingSenderId: '606102785559',
+    projectId: 'activity-4-47631',
+    authDomain: 'activity-4-47631.firebaseapp.com',
+    storageBucket: 'activity-4-47631.firebasestorage.app',
   );
 }
