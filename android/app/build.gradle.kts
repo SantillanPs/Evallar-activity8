@@ -3,7 +3,23 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
-    id("com.google.gms.google-services")
+}
+
+import groovy.json.JsonSlurper
+
+val googleServicesJson = file("google-services.json")
+var packageName = "com.example.flutter_application_1"
+
+if (googleServicesJson.exists()) {
+    try {
+        val json = JsonSlurper().parse(googleServicesJson) as Map<String, Any>
+        val client = (json["client"] as List<Map<String, Any>>)[0]
+        val clientInfo = client["client_info"] as Map<String, Any>
+        val androidClientInfo = clientInfo["android_client_info"] as Map<String, Any>
+        packageName = androidClientInfo["package_name"] as String
+    } catch (e: Exception) {
+        println("Warning: Failed to parse google-services.json. Using default applicationId.")
+    }
 }
 
 android {
@@ -22,7 +38,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.flutter_application_1"
+        applicationId = packageName
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -43,22 +59,19 @@ android {
 flutter {
     source = "../.."
 }
+
 dependencies {
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
 
-  // Import the Firebase BoM
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
 
-  implementation(platform("com.google.firebase:firebase-bom:34.3.0"))
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+}
 
-
-  // TODO: Add the dependencies for Firebase products you want to use
-
-  // When using the BoM, don't specify versions in Firebase dependencies
-
-  implementation("com.google.firebase:firebase-analytics")
-
-
-  // Add the dependencies for any other desired Firebase products
-
-  // https://firebase.google.com/docs/android/setup#available-libraries
-
+if (googleServicesJson.exists()) {
+    apply(plugin = "com.google.gms.google-services")
 }
